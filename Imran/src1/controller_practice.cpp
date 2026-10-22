@@ -9,7 +9,6 @@
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/joy.hpp>
 
-// ---------------- Tunable constants ----------------
 const float VELOCITY_MAX = 2500.0f;     // drive motor RPM at full stick (same as team code)
 const float SLOW_FACTOR = 0.5f;         // arcade mode runs at half speed for fine moves
 const float VIBRATOR_OUTPUT = 1.0f;
