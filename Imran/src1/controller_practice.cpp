@@ -65,8 +65,8 @@ class ControllerNode : public rclcpp::Node
       rightMotor(can_interface, RIGHT_MOTOR),
       leftLift(can_interface, LEFT_LIFT),
       rightLift(can_interface, RIGHT_LIFT),
-      Tilt(can_inteface, Tilt),
-      vibrator(can_inteface, vibrator)
+      tilt(can_interface, TILT),
+      vibrator(can_interface, VIBRATOR),
       vibrator_active(false) //false so when the rover gets turned on the vibrator doesnt start as well
 
     { 
@@ -96,9 +96,9 @@ class ControllerNode : public rclcpp::Node
 
       tilt.SetIdleMode(IdleMode::kBrake);
       tilt.SetMotorType(MotorType::kBrushed);
-      tilt.SensorType(SensorType::kEncoder);
+      tilt.SetSensorType(SensorType::kEncoder);
 
-      vibrator.SetIdlemode(IdleMode::kBrake);
+      vibrator.SetIdleMode(IdleMode::kBrake);
       vibrator.SetMotorType(MotorType::kBrushed);
       vibrator.SetSensorType(SensorType::kEncoder);
 
@@ -152,18 +152,21 @@ class ControllerNode : public rclcpp::Node
       RCLCPP_INFO(this->get_logger(), "we got joystick");
       //Send initial heartbears (catch exceptions if thrown)
 
+
+      //i changed the heartbeat from .heartBeat to .Heartbeat becaus e it is what it says in sparkbase.hpp
       try {
-        leftMotor.heartBeat();
-        rightMotor.heartBeat();
-        leftLift.heartBeat();
-        rightLift.heartBeat();
-        tilt.heartBeat();
-        vibrator.heartBeat();
+        leftMotor.Heartbeat();
+        rightMotor.Heartbeat();
+        leftLift.Heartbeat();
+        rightLift.Heartbeat();
+        tilt.Heartbeat();
+        vibrator.Heartbeat();
       }
 
       catch (const std::exception &e) {
         RCLCPP_ERROR(this->get_logger(), "Exception in heartbeat: %s", e.what());
       }
+    }
 
 
     
@@ -199,12 +202,12 @@ private:
   {
 
     //sends heartbeats to motors so they are acctually getting the joy input
-    leftMotor.heartBeat();
-    rightMotor.heartBeat();
-    vibrator.heartBeat();
-    rightLift.heartBeat();
-    leftLift.heartBeat();
-    tilt.heartBeat();
+    leftMotor.Heartbeat();
+    rightMotor.Heartbeat();
+    vibrator.Heartbeat();
+    rightLift.Heartbeat();
+    leftLift.Heartbeat();
+    tilt.Heartbeat();
     
     //get the vertical axis from each joystick stick
     //we are setting up for tank drive so each joystick only moves one side of the robot
@@ -260,7 +263,6 @@ int main(int argc, char *argv[])
   rclcpp::shutdown();
   return 0;
 }
-
 
 
 
